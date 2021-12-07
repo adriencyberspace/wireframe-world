@@ -2,32 +2,26 @@ import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
-/**
- * Base
- */
+/* ----- BASE ----- */
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
 
 // Scene
 const scene = new THREE.Scene()
 
-/**
- * Object
- */
+// Object
 const geometry = new THREE.BoxGeometry(1, 1, 1)
 const material = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true })
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
 
-/**
- * Sizes
- */
+// Sizes
 const sizes = {
     width: window.innerWidth,
     height: window.innerHeight
 }
 
-// Resize Screen
+/* ----- RESIZE SCREEN ----- */
 window.addEventListener('resize', () => {
     sizes.width = window.innerWidth
     sizes.height = window.innerHeight
@@ -63,9 +57,7 @@ window.addEventListener('dblclick', () => {
 })
 
 
-/**
- * Camera
- */
+/* ----- CAMERA ----- */
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
 camera.position.z = 3
@@ -75,9 +67,7 @@ scene.add(camera)
 const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
 
-/**
- * Renderer
- */
+/* ----- RENDERER ----- */
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
     alpha: true
@@ -87,9 +77,7 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 renderer.setSize(sizes.width, sizes.height)
 renderer.setClearColor( 0x0000ff, 1)
 
-/**
- * Animate
- */
+/* ----- ANIMATE ----- */
 const clock = new THREE.Clock()
 
 const tick = () =>
