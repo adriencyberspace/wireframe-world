@@ -7,7 +7,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 const canvas = document.querySelector('canvas.webgl')
 
 const fov = 40
-const aspect = 1920/ 1080
+const aspect = window.innerWidth / window.innerHeight
 const near = 1.0
 const far = 1000
 
