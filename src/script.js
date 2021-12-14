@@ -1,6 +1,37 @@
 import './style.css'
 import * as THREE from 'three'
+import GUI from 'lil-gui'; 
+import gsap from 'gsap'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+
+
+/* ----- DEBUG UI ----- */
+// TODO: Hide debugger
+const gui = new GUI();
+
+const parameters = {
+    color: 0xffffff,
+    sunColor: 0xffff00,
+    spin: () => {
+        gsap.to(group.rotation, { duration: 1, y: group.rotation.y + 10 })
+    }
+}
+
+gui
+    .add(parameters, 'spin')
+
+gui
+    .addColor(parameters, 'color')
+    .onChange(() => {
+        cubeMaterial.color.set(parameters.color)
+    })
+gui
+    .addColor(parameters, 'sunColor')
+    .onChange(() => {
+        material.color.set(parameters.sunColor)
+    })
+console.log(gui)
+
 
 /* ----- BASE ----- */
 // Canvas
@@ -29,10 +60,11 @@ const group = new THREE.Group()
 // group.position.y = 2
 // group.rotation.y = 0
 scene.add(group)
+const cubeMaterial = new THREE.MeshBasicMaterial({ color: parameters.color, wireframe: true })
 
 const cube1 = new THREE.Mesh(
     new THREE.BoxGeometry(1, 1, 1, 3, 3, 3),
-    new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true })
+    cubeMaterial
 )
 cube1.position.x = -3
 cube1.position.y = 2
@@ -40,7 +72,7 @@ group.add(cube1)
 
 const cube2 = new THREE.Mesh(
     new THREE.BoxGeometry(1, 1, 1, 3, 3, 3),
-    new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true })
+    cubeMaterial
 )
 cube2.position.x = -1.5
 cube2.position.y = 3
@@ -48,7 +80,7 @@ group.add(cube2)
 
 const cube3 = new THREE.Mesh(
     new THREE.BoxGeometry(1, 1, 1, 3, 3, 3),
-    new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true })
+    cubeMaterial
 )
 cube3.position.x = 0
 cube3.position.y = 4
@@ -56,7 +88,7 @@ group.add(cube3)
 
 const cube4 = new THREE.Mesh(
     new THREE.BoxGeometry(1, 1, 1, 3, 3, 3),
-    new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true })
+    cubeMaterial
 )
 cube4.position.x = 1.5
 cube4.position.y = 3
@@ -64,7 +96,7 @@ group.add(cube4)
 
 const cube5 = new THREE.Mesh(
     new THREE.BoxGeometry(1, 1, 1, 3, 3, 3),
-    new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true })
+    cubeMaterial
 )
 cube5.position.x = 3
 cube5.position.y = 2
@@ -72,10 +104,42 @@ group.add(cube5)
 
 // Sphere / Sun
 const geometry = new THREE.SphereGeometry( 5, 32, 16 );
-const material = new THREE.MeshBasicMaterial( { color: 0xffff00, wireframe: true } );
+const material = new THREE.MeshBasicMaterial( { color: parameters.sunColor, wireframe: true } );
 const sphere = new THREE.Mesh( geometry, material );
 sphere.position.set(50, 50, -200)
 scene.add( sphere );
+
+
+// Debug
+gui
+    .add(group.position, 'x')
+    .min(- 3)
+    .max(3)
+    .step(0.01)
+    .name("group horizontal")
+gui
+    .add(group.position, 'y')
+    .min(- 3)
+    .max(3)
+    .step(0.01)
+    .name("group vertical")
+
+gui
+    .add(group, 'visible')
+    .name('group visibile')
+
+gui
+    .add(cubeMaterial, 'wireframe')
+    .name('group wireframe')
+
+gui
+    .add(sphere, 'visible')
+    .name('sun visibile')
+
+gui
+    .add(material, 'wireframe')
+    .name('sun wireframe')
+
 
 // Rotations
 // cube1.rotation.z = Math.PI * .25
